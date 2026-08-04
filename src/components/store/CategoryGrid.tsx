@@ -1,43 +1,57 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
-import { CATEGORIES, STORE } from "@/lib/storeConfig";
+import { CATEGORIES } from "@/lib/storeConfig";
+import { ScrollReveal } from "@/components/store/ScrollReveal";
+
+const CATEGORY_IMAGES: Record<string, string> = {
+  "sharara-suits": "/products/product-sharara-01.png",
+  "salwar-kameez": "/products/product-salwar-01.png",
+  anarkali: "/products/product-anarkali-01.png",
+  lehenga: "/products/product-lehenga-01.png",
+  "kurti-sets": "/products/product-kurti-01.png",
+  "party-wear": "/products/product-party-01.png",
+};
 
 export function CategoryGrid() {
   const items = CATEGORIES.filter((c) => c.slug !== "all");
 
   return (
-    <section className="container-store py-12 md:py-16">
-      <div className="flex items-end justify-between mb-8">
-        <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold mb-2">Collections</p>
-          <h2 className="font-serif text-2xl md:text-3xl text-foreground">Shop by Category</h2>
+    <section className="bg-[#f7f3ed] border-y border-border/60">
+      <div className="container-store section-spacing">
+        <ScrollReveal>
+          <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
+            <p className="section-label justify-center flex">Collections</p>
+            <h2 className="section-title">Shop by Category</h2>
+            <p className="section-subtitle mx-auto mt-3">
+              Curated ethnic wear for weddings, festivities, and everyday elegance.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
+          {items.map((cat, i) => (
+            <ScrollReveal key={cat.slug} delay={(i % 4) as 0 | 1 | 2 | 3}>
+              <Link
+                to={`/shop?category=${cat.slug}`}
+                className="group relative aspect-[4/5] overflow-hidden rounded-sm bg-white shadow-sm card-lift block"
+              >
+                <img
+                  src={CATEGORY_IMAGES[cat.slug]}
+                  alt={cat.label}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#2a1818]/80 via-[#2a1818]/25 to-transparent transition-opacity duration-300 group-hover:from-[#2a1818]/90" />
+                <div className="absolute bottom-0 inset-x-0 p-3 md:p-4">
+                  <p className="text-white font-serif text-base md:text-lg leading-tight">{cat.label}</p>
+                  <p className="text-white/70 text-[10px] uppercase tracking-[0.2em] mt-1 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                    Shop now
+                  </p>
+                </div>
+              </Link>
+            </ScrollReveal>
+          ))}
         </div>
-        <Link to="/shop" className="text-sm text-primary font-medium hidden sm:flex items-center gap-1 hover:gap-2 transition-all">
-          View all <ArrowRight className="w-4 h-4" />
-        </Link>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
-        {items.map((cat) => (
-          <Link
-            key={cat.slug}
-            to={`/shop?category=${cat.slug}`}
-            className="group rounded-xl border border-border bg-card p-4 md:p-5 text-center hover:border-primary/40 hover:shadow-soft transition-all duration-200"
-          >
-            <div className="w-10 h-10 rounded-full bg-primary/10 text-primary font-serif text-lg font-bold flex items-center justify-center mx-auto mb-2 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-              {cat.label.charAt(0)}
-            </div>
-            <p className="text-xs md:text-sm font-medium text-foreground">{cat.label}</p>
-          </Link>
-        ))}
       </div>
     </section>
-  );
-}
-
-export function DemoBanner() {
-  return (
-    <div className="bg-primary/10 border-b border-primary/20 text-center py-2 px-4">
-      <p className="text-xs text-primary/90 font-medium">{STORE.demoNote}</p>
-    </div>
   );
 }
