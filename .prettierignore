@@ -1,0 +1,17 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+
+# Cache
+.cache
+*.tsbuildinfo
+
+# Config files
+*.json
+!.prettierrc
+
+# Generated files
+vite.config.js
+vite.config.d.ts

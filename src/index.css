@@ -1,0 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* A to Z — Premium ethnic boutique: ivory + maroon + gold */
+    --background: 40 33% 97%;
+    --foreground: 0 0% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 12%;
+
+    --primary: 345 61% 30%;
+    --primary-foreground: 40 33% 98%;
+
+    --secondary: 40 20% 93%;
+    --secondary-foreground: 0 0% 20%;
+
+    --muted: 40 15% 92%;
+    --muted-foreground: 0 0% 42%;
+
+    --accent: 43 65% 47%;
+    --accent-foreground: 0 0% 12%;
+
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 15% 88%;
+    --input: 40 15% 88%;
+    --ring: 345 61% 30%;
+
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: "Cormorant Garamond", Georgia, serif;
+  }
+}
+
+@layer components {
+  .container-store {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .shadow-soft {
+    box-shadow: 0 4px 20px -4px hsl(345 61% 30% / 0.08);
+  }
+
+  .shadow-elevated {
+    box-shadow: 0 20px 50px -12px hsl(0 0% 0% / 0.15);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
