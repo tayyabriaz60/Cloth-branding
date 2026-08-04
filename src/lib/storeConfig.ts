@@ -8,8 +8,20 @@ export const STORE = {
   logo: "/a-to-z-logo.png",
   currency: "PKR" as const,
   currencySymbol: "Rs.",
-  demoNote: "Demo store — sample products & mock checkout. Payment gateway not connected yet.",
+  domain: "AToZFashion.com",
+  whatsapp: "923000000000",
+  phone: "+92 300 0000000",
 } as const;
+
+/** Primary navbar links (G3-style horizontal nav) */
+export const NAV_LINKS = [
+  { slug: "sharara-suits", label: "Sharara" },
+  { slug: "salwar-kameez", label: "Salwar" },
+  { slug: "anarkali", label: "Anarkali" },
+  { slug: "lehenga", label: "Lehenga" },
+  { slug: "kurti-sets", label: "Kurti" },
+  { slug: "party-wear", label: "Party" },
+] as const;
 
 export const TRUST_SIGNALS = [
   { title: "Free Shipping", subtitle: "On orders over Rs. 5,000*", placeholder: true },

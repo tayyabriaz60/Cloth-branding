@@ -47,41 +47,36 @@ export function HeroSlider() {
         <CarouselContent className="-ml-0">
           {HERO_SLIDES.map((slide, index) => (
             <CarouselItem key={slide.id} className="pl-0 basis-full">
-              <div className="relative min-h-[78vh] md:min-h-[82vh] lg:min-h-[88vh] max-h-[920px]">
-                {/* Background image */}
-                <div className="absolute inset-0 md:inset-y-0 md:right-0 md:left-[38%] lg:left-[42%]">
-                  <img
-                    src={slide.image}
-                    alt=""
-                    className="w-full h-full object-cover object-top"
-                    loading={index === 0 ? "eager" : "lazy"}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#f7f3ed] via-[#f7f3ed]/80 to-transparent md:from-[#f7f3ed] md:via-[#f7f3ed]/40 md:to-black/10" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent md:hidden" />
+              <div className="min-h-0 lg:min-h-[85vh] lg:max-h-[920px]">
+                {/* Mobile — stacked: image then text (no seam overlap) */}
+                <div className="lg:hidden">
+                  <div className="relative aspect-[4/5] sm:aspect-[5/6] overflow-hidden">
+                    <img
+                      src={slide.image}
+                      alt=""
+                      className="w-full h-full object-cover object-top"
+                      loading={index === 0 ? "eager" : "lazy"}
+                    />
+                  </div>
+                  <div className="px-5 sm:px-8 py-10 sm:py-12 bg-[#f7f3ed]">
+                    <HeroCopy slide={slide} />
+                  </div>
                 </div>
 
-                {/* Content */}
-                <div className="container-store relative z-10 flex items-center min-h-[78vh] md:min-h-[82vh] lg:min-h-[88vh] max-h-[920px] py-16 md:py-20">
-                  <div className="max-w-xl animate-fade-in">
-                    <p className="section-label">{slide.label}</p>
-                    <h1 className="font-serif text-[2rem] sm:text-4xl md:text-[2.75rem] lg:text-[3.5rem] text-foreground leading-[1.1] mb-4 md:mb-5">
-                      {slide.title}
-                      {slide.highlight && (
-                        <span className="block italic text-primary mt-1">{slide.highlight}</span>
-                      )}
-                    </h1>
-                    <p className="section-subtitle mb-8 md:mb-10">{slide.subtitle}</p>
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <Link to={slide.cta.href} className="btn-store-primary group">
-                        {slide.cta.label}
-                        <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-0.5" />
-                      </Link>
-                      {slide.secondaryCta && (
-                        <Link to={slide.secondaryCta.href} className="btn-store-outline">
-                          {slide.secondaryCta.label}
-                        </Link>
-                      )}
+                {/* Desktop — hard 50/50 split: text LEFT column only, image RIGHT only */}
+                <div className="hidden lg:grid lg:grid-cols-2 lg:min-h-[85vh] lg:max-h-[920px]">
+                  <div className="flex items-center bg-[#f7f3ed] px-10 xl:px-16 2xl:px-20 py-16 xl:py-20">
+                    <div className="w-full max-w-[440px] xl:max-w-[480px]">
+                      <HeroCopy slide={slide} />
                     </div>
+                  </div>
+                  <div className="relative overflow-hidden bg-[#f3efe9]">
+                    <img
+                      src={slide.image}
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-cover object-top"
+                      loading={index === 0 ? "eager" : "lazy"}
+                    />
                   </div>
                 </div>
               </div>
@@ -89,7 +84,6 @@ export function HeroSlider() {
           ))}
         </CarouselContent>
 
-        {/* Arrows */}
         <button
           type="button"
           onClick={() => api?.scrollPrev()}
@@ -107,7 +101,6 @@ export function HeroSlider() {
           <ChevronRight className="w-5 h-5" />
         </button>
 
-        {/* Dots */}
         <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
           {HERO_SLIDES.map((slide, i) => (
             <button
@@ -125,5 +118,31 @@ export function HeroSlider() {
         </div>
       </Carousel>
     </section>
+  );
+}
+
+function HeroCopy({ slide }: { slide: (typeof HERO_SLIDES)[number] }) {
+  return (
+    <div className="animate-fade-in">
+      <p className="section-label">{slide.label}</p>
+      <h1 className="font-serif text-[2rem] sm:text-4xl lg:text-[2.65rem] xl:text-[3rem] text-foreground mb-4 lg:mb-6 space-y-2 lg:space-y-3">
+        <span className="block leading-[1.3]">{slide.title}</span>
+        {slide.highlight && (
+          <span className="block italic text-primary leading-[1.3]">{slide.highlight}</span>
+        )}
+      </h1>
+      <p className="section-subtitle mb-8 lg:mb-10 max-w-[38ch]">{slide.subtitle}</p>
+      <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+        <Link to={slide.cta.href} className="btn-store-primary group">
+          {slide.cta.label}
+          <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-0.5" />
+        </Link>
+        {slide.secondaryCta && (
+          <Link to={slide.secondaryCta.href} className="btn-store-outline">
+            {slide.secondaryCta.label}
+          </Link>
+        )}
+      </div>
+    </div>
   );
 }

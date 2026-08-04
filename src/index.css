@@ -71,13 +71,13 @@
     font-family: "Playfair Display", Georgia, serif;
     font-weight: 600;
     letter-spacing: -0.02em;
-    line-height: 1.15;
+    line-height: 1.25;
   }
 }
 
 @layer components {
   .container-store {
-    @apply max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-10;
+    @apply max-w-[1320px] mx-auto px-5 sm:px-8 lg:px-12;
   }
 
   .section-label {
@@ -175,22 +175,29 @@
   }
 
   .header-search {
-    @apply flex items-center w-full h-10 lg:h-11 rounded-md px-3 gap-2.5 transition-colors;
-    background-color: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    @apply flex items-center w-full h-10 px-4 gap-2.5 transition-all duration-200;
+    border-radius: 9999px;
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .header-search:hover {
+    background-color: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.16);
   }
 
   .header-search:focus-within {
-    background-color: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.25);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
   }
 
   .header-search input {
-    @apply flex-1 bg-transparent text-sm text-white outline-none min-w-0;
+    @apply flex-1 bg-transparent text-[13px] text-white outline-none min-w-0;
   }
 
   .header-search input::placeholder {
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(255, 255, 255, 0.38);
   }
 }
 

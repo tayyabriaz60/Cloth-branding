@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SlidersHorizontal } from "lucide-react";
 import { ProductCard } from "@/components/store/ProductCard";
-import { DemoBanner } from "@/components/store/CategoryGrid";
 import { Button } from "@/components/ui/button";
 import { MOCK_PRODUCTS, sortProducts, type SortOption } from "@/data/mockProducts";
 import { CATEGORIES } from "@/lib/storeConfig";
@@ -15,6 +14,7 @@ export default function ShopPage() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const category = params.get("category") ?? "all";
+  const query = (params.get("q") ?? "").trim().toLowerCase();
   const sort = (params.get("sort") as SortOption) ?? "popular";
   const minPrice = Number(params.get("min") ?? 0);
   const maxPrice = Number(params.get("max") ?? 999999);
@@ -24,10 +24,15 @@ export default function ShopPage() {
     let list = MOCK_PRODUCTS.filter((p) => {
       const catOk = category === "all" || p.categorySlug === category;
       const priceOk = p.price >= minPrice && p.price <= maxPrice;
-      return catOk && priceOk;
+      const searchOk =
+        !query ||
+        p.name.toLowerCase().includes(query) ||
+        p.category.toLowerCase().includes(query) ||
+        p.description.toLowerCase().includes(query);
+      return catOk && priceOk && searchOk;
     });
     return sortProducts(list, sort);
-  }, [category, sort, minPrice, maxPrice]);
+  }, [category, sort, minPrice, maxPrice, query]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -42,11 +47,14 @@ export default function ShopPage() {
 
   return (
     <>
-      <DemoBanner />
-      <div className="container-store py-8 md:py-12">
-        <div className="mb-6">
-          <h1 className="font-serif text-2xl md:text-3xl text-foreground">Shop All</h1>
-          <p className="text-sm text-muted-foreground mt-1">{filtered.length} products</p>
+      <div className="container-store py-10 md:py-14">
+        <div className="mb-8 md:mb-10">
+          <p className="section-label">Catalogue</p>
+          <h1 className="section-title">All Products</h1>
+          <p className="text-sm text-muted-foreground mt-2">
+            {filtered.length} styles available
+            {query ? ` for "${params.get("q")}"` : ""}
+          </p>
         </div>
 
         <div className="flex gap-8">
@@ -66,7 +74,7 @@ export default function ShopPage() {
               <select
                 value={sort}
                 onChange={(e) => updateParam("sort", e.target.value)}
-                className="h-10 rounded-lg border border-border bg-background px-3 text-sm"
+                className="h-10 rounded-sm border border-border bg-white px-3 text-xs uppercase tracking-wider font-medium text-foreground"
                 aria-label="Sort products"
               >
                 <option value="popular">Popularity</option>
@@ -85,7 +93,7 @@ export default function ShopPage() {
             </div>
 
             {mobileFiltersOpen && (
-              <div className="md:hidden mb-6 p-4 rounded-xl border border-border bg-card animate-fade-in">
+              <div className="md:hidden mb-6 p-4 rounded-sm border border-border bg-card animate-fade-in">
                 <FilterPanel
                   category={category}
                   sort={sort}
@@ -101,7 +109,7 @@ export default function ShopPage() {
             {paginated.length === 0 ? (
               <p className="text-center text-muted-foreground py-16">No products match your filters.</p>
             ) : (
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
                 {paginated.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -116,7 +124,7 @@ export default function ShopPage() {
                     type="button"
                     onClick={() => updateParam("page", String(p))}
                     className={cn(
-                      "w-10 h-10 rounded-lg text-sm font-medium transition-colors",
+                      "w-10 h-10 rounded-sm text-sm font-medium transition-colors",
                       page === p ? "bg-primary text-primary-foreground" : "bg-secondary hover:bg-secondary/80"
                     )}
                   >
@@ -147,7 +155,7 @@ function FilterPanel({
   return (
     <>
       <div>
-        <h3 className="text-sm font-semibold mb-3">Category</h3>
+        <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent mb-3">Category</h3>
         <ul className="space-y-2">
           {CATEGORIES.map((c) => (
             <li key={c.slug}>
@@ -168,7 +176,7 @@ function FilterPanel({
         </ul>
       </div>
       <div>
-        <h3 className="text-sm font-semibold mb-3">Price (PKR)</h3>
+        <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent mb-3">Price (PKR)</h3>
         <div className="space-y-2">
           {[
             { label: "All", min: "0", max: "999999" },

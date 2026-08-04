@@ -3,7 +3,6 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { ChevronRight, Ruler, ShoppingBag, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/store/ProductCard";
-import { DemoBanner } from "@/components/store/CategoryGrid";
 import { getProductBySlug, getRelatedProducts } from "@/data/mockProducts";
 import { formatPrice } from "@/lib/storeConfig";
 import { useCart } from "@/context/CartContext";
@@ -18,7 +17,6 @@ export default function ProductPage() {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [activeImage, setActiveImage] = useState(0);
-  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
 
   if (!product) {
     return (
@@ -48,7 +46,6 @@ export default function ProductPage() {
 
   return (
     <>
-      <DemoBanner />
       <div className="container-store py-6 md:py-10">
         <nav className="flex items-center gap-1 text-xs text-muted-foreground mb-6 flex-wrap">
           <Link to="/" className="hover:text-primary">Home</Link>
@@ -65,11 +62,11 @@ export default function ProductPage() {
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
           {/* Gallery */}
           <div>
-            <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-secondary/30 mb-3">
+            <div className="product-image-wrap mb-3">
               <img
                 src={images[activeImage]}
                 alt={product.name}
-                className="w-full h-full object-cover object-top"
+                className="absolute inset-0 w-full h-full object-cover object-top"
               />
             </div>
             {images.length > 1 && (
@@ -93,12 +90,10 @@ export default function ProductPage() {
 
           {/* Info */}
           <div className="md:sticky md:top-24 md:self-start">
-            <p className="text-xs uppercase tracking-wider text-primary font-semibold mb-2">
-              {product.category}
-            </p>
-            <h1 className="font-serif text-2xl md:text-3xl text-foreground mb-3">{product.name}</h1>
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-xl font-semibold">{formatPrice(product.price)}</span>
+            <p className="section-label">{product.category}</p>
+            <h1 className="font-serif text-2xl md:text-[2rem] lg:text-[2.25rem] text-foreground mb-4 leading-tight">{product.name}</h1>
+            <div className="flex items-baseline gap-3 mb-6 pb-6 border-b border-border">
+              <span className="text-2xl font-semibold text-primary">{formatPrice(product.price)}</span>
               {product.originalPrice && (
                 <span className="text-muted-foreground line-through text-sm">
                   {formatPrice(product.originalPrice)}
@@ -136,7 +131,6 @@ export default function ProductPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    setSizeGuideOpen(!sizeGuideOpen);
                     toast.info("Size guide (demo)", { description: "Placeholder sizing chart for client review." });
                   }}
                   className="text-xs text-primary flex items-center gap-1"
@@ -151,7 +145,7 @@ export default function ProductPage() {
                     type="button"
                     onClick={() => setSelectedSize(s)}
                     className={cn(
-                      "min-w-[44px] h-11 px-3 rounded-lg text-sm border transition-colors",
+                      "min-w-[44px] h-11 px-3 rounded-sm text-sm border transition-colors",
                       size === s
                         ? "border-primary bg-primary text-primary-foreground font-medium"
                         : "border-border hover:border-primary/40"
@@ -164,10 +158,10 @@ export default function ProductPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 mb-8">
-              <Button size="lg" className="h-12 flex-1 rounded-xl" onClick={handleAddToCart}>
+              <Button size="lg" className="h-12 flex-1 rounded-sm uppercase tracking-[0.1em] text-xs" onClick={handleAddToCart}>
                 <ShoppingBag className="w-4 h-4 mr-2" /> Add to Cart
               </Button>
-              <Button size="lg" variant="outline" className="h-12 flex-1 rounded-xl" onClick={handleBuyNow}>
+              <Button size="lg" variant="outline" className="h-12 flex-1 rounded-sm uppercase tracking-[0.1em] text-xs" onClick={handleBuyNow}>
                 <Zap className="w-4 h-4 mr-2" /> Buy Now
               </Button>
             </div>
@@ -186,7 +180,8 @@ export default function ProductPage() {
 
         {related.length > 0 && (
           <section className="mt-16 pt-12 border-t border-border">
-            <h2 className="font-serif text-xl md:text-2xl mb-6">You May Also Like</h2>
+            <p className="section-label">Complete the Look</p>
+            <h2 className="section-title mb-8">You May Also Like</h2>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {related.map((p) => (
                 <ProductCard key={p.id} product={p} />
@@ -199,7 +194,7 @@ export default function ProductPage() {
       {/* Mobile sticky bar */}
       <div className="fixed bottom-0 inset-x-0 z-40 md:hidden border-t border-border bg-background/95 backdrop-blur p-3 safe-bottom">
         <div className="flex gap-2 max-w-md mx-auto">
-          <Button className="flex-1 h-11 rounded-xl" onClick={handleAddToCart}>
+          <Button className="flex-1 h-11 rounded-sm uppercase tracking-[0.1em] text-xs" onClick={handleAddToCart}>
             Add to Cart · {formatPrice(product.price)}
           </Button>
         </div>
