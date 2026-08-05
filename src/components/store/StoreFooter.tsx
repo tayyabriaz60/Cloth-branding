@@ -6,9 +6,9 @@ const TRUST_ICONS = [Truck, RefreshCw, ShieldCheck, Gem];
 
 export function StoreFooter() {
   return (
-    <footer className="bg-[hsl(var(--wine-dark))] text-white mt-20">
-      <div className="container-store py-14 md:py-16">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+    <footer className="bg-[hsl(var(--wine-dark))] text-white mt-12 md:mt-16">
+      <div className="container-store py-10 md:py-12">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
               <img src={STORE.logo} alt="" className="h-10 w-10 object-contain shrink-0" />
@@ -41,10 +41,9 @@ export function StoreFooter() {
             <p className="text-sm text-white/60 mt-1.5">+92 300 0000000</p>
           </div>
         </div>
-        <p className="text-[11px] text-white/45 mt-10 pt-8 border-t border-white/10">
-          * Placeholder policies for demo purposes.
+        <p className="text-[11px] text-white/40 mt-8 pt-6 border-t border-white/10">
+          © {new Date().getFullYear()} {STORE.name}. All rights reserved.
         </p>
-        <p className="text-xs text-white/50 mt-3">© {new Date().getFullYear()} {STORE.name}. All rights reserved.</p>
       </div>
     </footer>
   );
